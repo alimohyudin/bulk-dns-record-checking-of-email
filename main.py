@@ -3,8 +3,9 @@ import csv
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 header_row = []
-black_list_domains = []
-white_list_domains = ['comcast.net']
+black_list_domains = ['gmail.com','comcast.net', 'aol.com', 'yahoo.com','me.com', 'icloud.com', 'outlook.com', 'mail.com', 'protonmail.com','gmx.com','mail.com','tutanota.com','yandex.com','fastmail.com','ymail.com']
+black_list_names = ['admin', 'support', 'info', 'sales', 'billing', 'contact', 'help', 'hr', 'jobs', 'careers', 'legal', 'webmaster', 'postmaster', 'abuse', 'no-reply']
+white_list_domains = []
 ignored_list_domains = []
 
 # Function to get MX records for a domain
@@ -39,14 +40,17 @@ def process_row(row):
     # get domain from email
     domain = ''
     try:
+        name = email.split("@")[0]
         domain = email.split("@")[1]
-        if(domain in black_list_domains):
+        if(domain.lower() in black_list_domains):
             return None 
-        if(domain in white_list_domains):
+        if(name.lower() in black_list_names):
+            return None 
+        if(domain.lower() in white_list_domains):
             return row
-        if(domain in ignored_list_domains):
+        if(domain.lower() in ignored_list_domains):
             return None
-
+        print("Name, Domain", name, domain)
         mx_records = get_mx_records(domain)
         #print(mx_records)
         if not is_filtered(mx_records):
