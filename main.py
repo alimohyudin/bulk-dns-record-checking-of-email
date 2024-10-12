@@ -32,6 +32,8 @@ def is_filtered(mx_records):
 
         if any(domain in record.lower() for domain in domains):
             return True
+        if 'outlook.com' in record.lower():
+            return True
     return False
 
 # Function to process a single domain and filter out unwanted ones
@@ -133,4 +135,4 @@ if __name__ == "__main__":
         for domain in ignored_list_domains:
             f.write(domain + '\n')
 
-    print(f"Filtered {len(filtered_domains)} domains that don't use Rackspace or Proofpoint.")
+    print(f"Filtered {len(filtered_domains)} domains filtered.")
